@@ -69,11 +69,10 @@ public class OpenApiMergerMojo extends AbstractMojo {
         log.debug("Create the output directory " + created);
 
         String fileExtension = "";
-        switch (outputFileFormat) {
-            case JSON:
-                fileExtension = ".json";
-            case YAML:
-                fileExtension = ".yaml";
+        if (outputFileFormat == OpenApiFileFormat.JSON) {
+            fileExtension = ".json";
+        } else {
+            fileExtension = ".yaml";
         }
         String outFileWithExtension = outputFileName + fileExtension;
         return new File(outputDir, outFileWithExtension);
