@@ -10,7 +10,7 @@ dependencies {
     testImplementation(group = "io.kotest", name = "kotest-runner-junit5", version = "4.1.2")
     testImplementation(group = "io.kotest", name = "kotest-assertions-core", version = "4.1.2")
     testImplementation(group = "io.kotest", name = "kotest-property", version = "4.1.2")
-    implementation(project(":openapi-merger-plugin-models"))
+    implementation(project(":openapi-merger-app"))
 }
 
 gradlePlugin {

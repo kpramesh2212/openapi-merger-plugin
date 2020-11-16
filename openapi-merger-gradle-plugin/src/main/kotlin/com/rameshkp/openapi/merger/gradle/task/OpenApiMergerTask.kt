@@ -1,11 +1,11 @@
 package com.rameshkp.openapi.merger.gradle.task
 
-import com.rameshkp.openapi.app.OpenApiMergerApp
+import com.rameshkp.openapi.merger.app.OpenApiMergerApp
+import com.rameshkp.openapi.merger.app.models.*
 import com.rameshkp.openapi.merger.gradle.extensions.OpenApiMergerExtension
 import com.rameshkp.openapi.merger.gradle.utils.OPENAPI_EXTENSION_NAME
 import com.rameshkp.openapi.merger.gradle.utils.OPENAPI_GROUP_NAME
 import com.rameshkp.openapi.merger.gradle.utils.OPENAPI_TASK_DESCRIPTION
-import com.rameshkp.openapi.mergers.models.*
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.file.Directory
@@ -78,7 +78,7 @@ open class OpenApiMergerTask : DefaultTask() {
                 val contactName = infoExtension.contact.name.orNull
                 val contactEmail = infoExtension.contact.email.orNull
                 if (isAnyValueNotNull(arrayOf(contactUrl, contactName, contactEmail))) {
-                    info.contact = Contact().let {contact ->
+                    info.contact = Contact().let { contact ->
                         contact.url = contactUrl
                         contact.email = contactEmail
                         contact.name = contactName
@@ -89,7 +89,7 @@ open class OpenApiMergerTask : DefaultTask() {
                 val licenseName = infoExtension.license.name.orNull
                 val licenseUrl = infoExtension.license.url.orNull
                 if (isAnyValueNotNull(arrayOf(licenseName, licenseUrl))) {
-                    info.license = License().let {license ->
+                    info.license = License().let { license ->
                         license.name = licenseName
                         license.url = licenseUrl
                         license

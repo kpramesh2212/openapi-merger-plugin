@@ -2,6 +2,7 @@ plugins {
     java
     maven
     `maven-publish`
+    signing
 }
 
 val localRepository: String by project.extra
@@ -26,12 +27,12 @@ dependencies {
     compileOnly(group = "org.projectlombok", name = "lombok", version = lombokVersion)
     annotationProcessor(group = "org.projectlombok", name = "lombok", version = lombokVersion)
 
-    implementation(project(":openapi-merger-plugin-models"))
+    implementation(project(":openapi-merger-app"))
     implementation(group = "org.apache.maven", name = "maven-core", version = mavenVersion)
     implementation(group = "org.apache.maven", name = "maven-plugin-api", version = mavenVersion)
     implementation(group = "org.apache.maven.plugin-tools", name = "maven-plugin-annotations", version = mavenPluginVersion)
 
-    mavenCliRuntime(project(":openapi-merger-plugin-models"))
+    mavenCliRuntime(project(":openapi-merger-app"))
     mavenCliRuntime(group = "org.apache.maven", name = "maven-embedder", version = mavenVersion)
     mavenCliRuntime(group = "org.apache.maven", name = "maven-compat", version = mavenVersion)
     mavenCliRuntime(group = "org.slf4j", name = "slf4j-simple", version = "1.7.30")
@@ -44,7 +45,7 @@ dependencies {
     testImplementation("junit", "junit", "4.12")
 }
 
-val publish by project(":openapi-merger-plugin-models").tasks.existing
+val publish by project(":openapi-merger-app").tasks.existing
 
 val generatePluginDescriptor by tasks.registering(JavaExec::class) {
     dependsOn(publish)
@@ -97,8 +98,40 @@ val jar by tasks.existing {
 
 publishing {
     publications {
-        create<MavenPublication>("maven-plugin") {
+        create<MavenPublication>("openApiMergerMavenPlugin") {
             from(components["java"])
+
+            pom {
+                name.set("Open API V3 Merger maven plugin")
+                description.set("A Maven plugin to merge open api v3 specification files")
+                url.set("https://github.com/kpramesh2212/openapi-merger-plugin")
+
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+
+                developers {
+                    developer {
+                        id.set("rameshkp")
+                        name.set("Ramesh KP")
+                        email.set("kpramesh2212@gmail.com")
+                    }
+                }
+                scm {
+                    connection.set("git@github.com:kpramesh2212/openapi-merger-plugin.git")
+                    developerConnection.set("git@github.com:kpramesh2212/openapi-merger-plugin.git")
+                    url.set("https://github.com/kpramesh2212/openapi-merger-plugin")
+                }
+
+            }
+
         }
     }
+}
+
+signing {
+    sign(publishing.publications["openApiMergerMavenPlugin"])
 }
