@@ -11,6 +11,9 @@ import io.swagger.v3.oas.models.parameters.RequestBody
 import io.swagger.v3.oas.models.responses.ApiResponse
 import io.swagger.v3.oas.models.security.SecurityScheme
 
+/**
+ *  A class to merge open api Components object
+ */
 class ComponentsMerger: Mergeable<Components> {
     private val components = Components()
 

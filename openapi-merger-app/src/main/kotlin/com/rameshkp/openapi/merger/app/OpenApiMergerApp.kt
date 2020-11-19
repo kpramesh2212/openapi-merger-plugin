@@ -16,6 +16,9 @@ import java.io.File
 import java.util.stream.Collectors
 import javax.validation.Validation
 
+/**
+ *  The class that helps in merging multiple open api v3 files into a single file
+ */
 class OpenApiMergerApp {
     private val log = LoggerFactory.getLogger(javaClass)
     private val validFileExtension = listOf("yaml", "json", "yml")

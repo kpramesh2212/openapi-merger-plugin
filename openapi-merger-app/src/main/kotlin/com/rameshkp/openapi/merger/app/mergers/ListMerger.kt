@@ -2,6 +2,9 @@ package com.rameshkp.openapi.merger.app.mergers
 
 import org.slf4j.LoggerFactory
 
+/**
+ *  A class to merge a list of components of type T
+ */
 class ListMerger<T>: Mergeable<List<T>> {
     private val log = LoggerFactory.getLogger(javaClass)
     private val list = ArrayList<T>()

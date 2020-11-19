@@ -6,6 +6,8 @@ plugins {
 }
 
 val localRepository: String by project.extra
+val localM2Repository = "$buildDir/m2Repo"
+val mavenCentralSnapshotUrl: String by project.extra
 
 val mavenCliRuntime: Configuration by configurations.creating {
     isVisible = false
@@ -32,13 +34,14 @@ dependencies {
     implementation(group = "org.apache.maven", name = "maven-plugin-api", version = mavenVersion)
     implementation(group = "org.apache.maven.plugin-tools", name = "maven-plugin-annotations", version = mavenPluginVersion)
 
-    mavenCliRuntime(project(":openapi-merger-app"))
+    mavenCliRuntime(group = "org.apache.maven", name = "maven-embedder", version = mavenVersion)
     mavenCliRuntime(group = "org.apache.maven", name = "maven-embedder", version = mavenVersion)
     mavenCliRuntime(group = "org.apache.maven", name = "maven-compat", version = mavenVersion)
     mavenCliRuntime(group = "org.slf4j", name = "slf4j-simple", version = "1.7.30")
     mavenCliRuntime(group = "org.eclipse.aether", name = "aether-connector-basic", version = eclipseAetherVersion)
     mavenCliRuntime(group = "org.eclipse.aether", name = "aether-transport-wagon", version = eclipseAetherVersion)
     mavenCliRuntime(group = "org.apache.maven.wagon", name = "wagon-http", version = mavenWagonVersion, classifier = "shaded")
+    mavenCliRuntime(group = "org.apache.maven.wagon", name = "wagon-file", version = mavenWagonVersion)
     mavenCliRuntime(group = "org.apache.maven.wagon", name = "wagon-provider-api", version = mavenWagonVersion)
 
 
@@ -60,7 +63,11 @@ val generatePluginDescriptor by tasks.registering(JavaExec::class) {
 
     classpath = mavenCliRuntime
     main = "org.apache.maven.cli.MavenCli"
-    systemProperties = mapOf("maven.multiModuleProjectDirectory" to projectDir, "localRepository" to localRepository)
+    systemProperties = mapOf(
+        "maven.multiModuleProjectDirectory" to projectDir,
+        "localM2Repository" to localM2Repository,
+        "mavenCentralSnapshotUrl" to mavenCentralSnapshotUrl
+    )
     args = listOf(
             "--errors",
             "--batch-mode",
@@ -74,8 +81,24 @@ val generatePluginDescriptor by tasks.registering(JavaExec::class) {
             packaging = "maven-plugin"
             withXml {
                 asNode().appendNode("build").apply {
-                    appendNode("directory", "$buildDir")
+                    appendNode("directory", buildDir)
                     appendNode("outputDirectory", "${javaOutputDir.get()}")
+                }
+                asNode().appendNode("repositories").apply {
+                    if (project.hasProperty("publishToLocal")) {
+                        appendNode("repository").apply {
+                            appendNode("id", "local-repository")
+                            appendNode("name", "Local File Based Repository")
+                            appendNode("url", "file://$localRepository")
+                        }
+                    }
+                    if (project.hasProperty("publishToCentral")) {
+                        appendNode("repository").apply {
+                            appendNode("id", "maven-snapshot-repository")
+                            appendNode("name", "Maven Central Snapshot Repository")
+                            appendNode("url", mavenCentralSnapshotUrl)
+                        }
+                    }
                 }
             }
         }.writeTo(pomFile)

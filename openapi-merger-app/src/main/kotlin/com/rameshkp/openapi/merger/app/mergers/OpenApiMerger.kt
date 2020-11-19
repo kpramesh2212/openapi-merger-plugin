@@ -6,6 +6,9 @@ import io.swagger.v3.oas.models.servers.Server
 import io.swagger.v3.oas.models.tags.Tag
 import org.slf4j.LoggerFactory
 
+/**
+ *  A class to merge open api object
+ */
 class OpenApiMerger: Mergeable<OpenAPI> {
     private val log = LoggerFactory.getLogger(javaClass)
     private val openAPI = OpenAPI()

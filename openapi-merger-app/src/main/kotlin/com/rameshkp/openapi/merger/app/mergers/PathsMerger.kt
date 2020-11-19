@@ -3,6 +3,9 @@ package com.rameshkp.openapi.merger.app.mergers
 import io.swagger.v3.oas.models.Paths
 import org.slf4j.LoggerFactory
 
+/**
+ *  A class to merge path objects in open api
+ */
 class PathsMerger: Mergeable<Paths> {
     private val log = LoggerFactory.getLogger(javaClass)
     private val paths = Paths()

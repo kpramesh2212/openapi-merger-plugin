@@ -4,6 +4,11 @@ plugins {
     signing
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 dependencies {
     implementation(kotlin(module = "stdlib"))
     implementation(group = "io.swagger.parser.v3", name = "swagger-parser", version = "2.0.23")
@@ -41,14 +46,23 @@ publishing {
                     }
                 }
                 scm {
-                    connection.set("git@github.com:kpramesh2212/openapi-merger-plugin.git")
-                    developerConnection.set("git@github.com:kpramesh2212/openapi-merger-plugin.git")
+                    connection.set("scm:git:git://github.com:kpramesh2212/openapi-merger-plugin.git")
+                    developerConnection.set("scm:git:ssh://github.com:kpramesh2212/openapi-merger-plugin.git")
                     url.set("https://github.com/kpramesh2212/openapi-merger-plugin")
                 }
 
             }
 
         }
+    }
+}
+
+tasks {
+    compileKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+    }
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = "1.8"
     }
 }
 

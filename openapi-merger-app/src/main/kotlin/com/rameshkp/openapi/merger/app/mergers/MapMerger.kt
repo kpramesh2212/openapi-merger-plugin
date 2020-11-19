@@ -3,6 +3,9 @@ package com.rameshkp.openapi.merger.app.mergers
 import org.slf4j.LoggerFactory
 import java.util.*
 
+/**
+ *  A class to merge a Map with string keys and value T
+ */
 class MapMerger<T>: Mergeable<Map<String, T>> {
     private val log = LoggerFactory.getLogger(javaClass)
     private val map = TreeMap<String, T>()
