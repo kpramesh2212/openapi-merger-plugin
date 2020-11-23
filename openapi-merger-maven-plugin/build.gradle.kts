@@ -85,18 +85,17 @@ val generatePluginDescriptor by tasks.registering(JavaExec::class) {
                     appendNode("outputDirectory", "${javaOutputDir.get()}")
                 }
                 asNode().appendNode("repositories").apply {
-                    if (project.hasProperty("publishToLocal")) {
-                        appendNode("repository").apply {
-                            appendNode("id", "local-repository")
-                            appendNode("name", "Local File Based Repository")
-                            appendNode("url", "file://$localRepository")
-                        }
-                    }
                     if (project.hasProperty("publishToCentral")) {
                         appendNode("repository").apply {
                             appendNode("id", "maven-snapshot-repository")
                             appendNode("name", "Maven Central Snapshot Repository")
                             appendNode("url", mavenCentralSnapshotUrl)
+                        }
+                    } else {
+                        appendNode("repository").apply {
+                            appendNode("id", "local-repository")
+                            appendNode("name", "Local File Based Repository")
+                            appendNode("url", "file://$localRepository")
                         }
                     }
                 }
@@ -148,9 +147,7 @@ publishing {
                     developerConnection.set("git@github.com:kpramesh2212/openapi-merger-plugin.git")
                     url.set("https://github.com/kpramesh2212/openapi-merger-plugin")
                 }
-
             }
-
         }
     }
 }

@@ -16,12 +16,6 @@ allprojects {
 
     publishing {
         repositories {
-            if (project.hasProperty("publishToLocal")) {
-                val localRepository: String by project.extra
-                maven {
-                    url = uri(localRepository)
-                }
-            }
             if (project.hasProperty("publishToCentral")) {
                 val mavenCentralUsername: String by project.extra
                 val mavenCentralPassword: String by project.extra
@@ -33,6 +27,11 @@ allprojects {
                         username = mavenCentralUsername
                         password = mavenCentralPassword
                     }
+                }
+            } else {
+                val localRepository: String by project.extra
+                maven {
+                    url = uri(localRepository)
                 }
             }
         }
