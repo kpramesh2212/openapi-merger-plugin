@@ -1,6 +1,7 @@
 plugins {
     `maven-publish`
     kotlin("jvm") version "1.3.72" apply false
+    id("net.researchgate.release") version "2.8.1"
 }
 
 val localRepository = "$buildDir/openapi-repo"
@@ -46,7 +47,12 @@ subprojects {
     }
 }
 
-val publish by tasks.existing
+
+val publishMergerApp = project(":openapi-merger-app").tasks.named("publish")
+val publishGradlePlugin = project(":openapi-merger-gradle-plugin").tasks.named("publish")
+val publishMavenPlugin = project(":openapi-merger-maven-plugin").tasks.named("publish")
 val build by tasks.registering {
-    dependsOn(publish)
+    dependsOn(publishMergerApp)
+    dependsOn(publishGradlePlugin)
+    dependsOn(publishMavenPlugin)
 }
