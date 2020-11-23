@@ -56,7 +56,7 @@ public class OpenApiMergerMojo extends AbstractMojo {
         log.debug("Attempting to merge the open api schema files");
         OpenApiMergerApp apiMergerApp = new OpenApiMergerApp();
         try {
-            apiMergerApp.run(inputDir, outputFile, openApi);
+            apiMergerApp.merge(inputDir, outputFile, openApi);
             log.info("Completed Open API file merging. output " + outputFile.getAbsolutePath());
         } catch (Exception e) {
             log.error(e);

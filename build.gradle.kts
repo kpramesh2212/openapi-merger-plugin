@@ -46,3 +46,8 @@ subprojects {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
+
+val publish by tasks.existing
+val build by tasks.registering {
+    dependsOn(publish)
+}

@@ -2,6 +2,7 @@ plugins {
     kotlin("jvm")
     `maven-publish`
     signing
+    id("io.kotest") version "0.2.6"
 }
 
 java {
@@ -19,6 +20,11 @@ dependencies {
     runtimeOnly(group = "org.hibernate.validator", name = "hibernate-validator-annotation-processor", version = "6.0.2.Final")
     runtimeOnly(group = "javax.el", name = "javax.el-api", version = "3.0.0")
     runtimeOnly(group = "org.glassfish.web", name = "javax.el", version = "2.2.6")
+
+    testImplementation(group = "io.kotest", name = "kotest-assertions-core-jvm", version = "4.3.1")
+    testImplementation(group = "io.kotest", name = "kotest-framework-engine-jvm", version = "4.3.1")
+    testImplementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = "1.4.1")
+
 }
 
 publishing {

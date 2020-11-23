@@ -1,6 +1,7 @@
 package com.rameshkp.openapi.merger.gradle.task
 
 import com.rameshkp.openapi.merger.app.OpenApiMergerApp
+import com.rameshkp.openapi.merger.app.exceptions.OpenApiDataInvalidException
 import com.rameshkp.openapi.merger.app.models.*
 import com.rameshkp.openapi.merger.gradle.extensions.OpenApiMergerExtension
 import com.rameshkp.openapi.merger.gradle.utils.OPENAPI_EXTENSION_NAME
@@ -16,13 +17,14 @@ import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.SkipWhenEmpty
 import org.gradle.api.tasks.TaskAction
+import kotlin.math.log
 
 open class OpenApiMergerTask : DefaultTask() {
-    @SkipWhenEmpty
-    @InputDirectory
-    private val inputDirectory: DirectoryProperty = project.objects.directoryProperty()
-    @OutputFile
-    private val outputFileProperty: RegularFileProperty = project.objects.fileProperty()
+    @get:SkipWhenEmpty
+    @get:InputDirectory
+    val inputDirectory: DirectoryProperty = project.objects.directoryProperty()
+    @get:OutputFile
+    val outputFileProperty: RegularFileProperty = project.objects.fileProperty()
     private val openApiMergerExtension: OpenApiMergerExtension
 
     private val validFileExtension = listOf("yaml", "json", "yml")
@@ -115,14 +117,14 @@ open class OpenApiMergerTask : DefaultTask() {
         // external docs
         val openApiMergerApp = OpenApiMergerApp()
         try {
-            openApiMergerApp.run(
-                inputDir = inputDirectory.asFile.get(),
+            openApiMergerApp.merge(
+                inputDir = inputDirectory.get().asFile,
                 outputFile = outputFile,
                 openApi = openApi
             )
-        } catch (e: Exception) {
+        } catch (e: OpenApiDataInvalidException) {
             logger.error("Error merging openapi files", e)
-            throw GradleException("Error merging openapi files \n ${e.message}")
+            throw GradleException("Error merging openapi files. Reason=\n${e.message}")
         }
     }
 

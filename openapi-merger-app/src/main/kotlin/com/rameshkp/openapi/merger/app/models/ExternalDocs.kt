@@ -1,5 +1,5 @@
 package com.rameshkp.openapi.merger.app.models
 
-import javax.validation.constraints.NotNull
+import javax.validation.constraints.NotBlank
 
-data class ExternalDocs(@field:NotNull(message = "ExternalDocs Url cannot be null") var url: String? = null, var description: String? = null)
+data class ExternalDocs(@field:NotBlank(message = "ExternalDocs Url cannot be blank") var url: String? = null, var description: String? = null)

@@ -1,5 +1,5 @@
 package com.rameshkp.openapi.merger.app.models
 
-import javax.validation.constraints.NotNull
+import javax.validation.constraints.NotBlank
 
-data class License(@field:NotNull(message = "License name cannot be null") var name: String? = null, var url: String? = null)
+data class License(@field:NotBlank(message = "License name cannot be blank") var name: String? = null, var url: String? = null)

@@ -17,7 +17,7 @@ internal class OpenApiMergerGradlePluginTest: WordSpec({
 
     "Using the Plugin ID" should {
         "Apply the Plugin" {
-            project.pluginManager.apply("com.ramesh.openapi-merger-gradle-plugin")
+            project.pluginManager.apply("com.rameshkp.openapi-merger-gradle-plugin")
             project.plugins.getPlugin(OpenApiMergerGradlePlugin::class.java) shouldNotBe null
         }
     }
@@ -41,27 +41,42 @@ internal class OpenApiMergerGradlePluginTest: WordSpec({
         project.pluginManager.apply(OpenApiMergerGradlePlugin::class.java)
         val openApiMergerExtension = project.extensions.getByName("openApiMerger") as OpenApiMergerExtension
         val openApiMerger = project.tasks.getByName("mergeOpenApiFiles") as OpenApiMergerTask
+        openApiMergerExtension.inputDirectory.set(project.buildDir)
 
         "Throw exception when open api version is missing" {
+            openApiMergerExtension.openApi.info.title.set("Title")
+            openApiMergerExtension.openApi.info.version.set("version")
             val exception = shouldThrow<GradleException> {
                 openApiMerger.execute()
             }
-            exception.message shouldBe "Required field open api version missing"
+            exception.message shouldBe """
+                Error merging openapi files. Reason=
+                OpenApi version cannot be blank
+            """.trimIndent()
         }
         "Throw exception when open api info title is missing" {
             openApiMergerExtension.openApi.openApiVersion.set("3.0.3")
+            openApiMergerExtension.openApi.info.version.set("version")
+            openApiMergerExtension.openApi.info.title.set("")
             val exception = shouldThrow<GradleException> {
                 openApiMerger.execute()
             }
-            exception.message shouldBe "Required field open api info title missing"
+            exception.message shouldBe """
+                Error merging openapi files. Reason=
+                OpenApi Info Title cannot be blank
+            """.trimIndent()
         }
         "Throw exception when open api info version is missing" {
             openApiMergerExtension.openApi.openApiVersion.set("3.0.3")
             openApiMergerExtension.openApi.info.title.set("Title")
+            openApiMergerExtension.openApi.info.version.set("")
             val exception = shouldThrow<GradleException> {
                 openApiMerger.execute()
             }
-            exception.message shouldBe "Required field open api info version missing"
+            exception.message shouldBe """
+                Error merging openapi files. Reason=
+                OpenApi Info Version cannot be blank
+            """.trimIndent()
         }
         "Throw exception when output file extension is invalid" {
             openApiMergerExtension.openApi.openApiVersion.set("3.0.3")

@@ -25,7 +25,7 @@ class OpenApiMergerApp {
     private val parseOptions = ParseOptions()
     private val openApiMerger = OpenApiMerger()
 
-    fun run(inputDir: File, outputFile: File, openApi: OpenApi?) {
+    fun merge(inputDir: File, outputFile: File, openApi: OpenApi?) {
         validate(openApi)
         inputDir.walk().filter { 
             validFileExtension.contains(it.extension)
@@ -97,7 +97,7 @@ class OpenApiMergerApp {
                 .map { a -> a.message}
                 .collect(Collectors.joining("\n"))
         if (!errorMessage.isNullOrBlank()) {
-            log.error("Validation error has occurred. errorMessage {}", this)
+            log.error("Validation error has occurred. errorMessage {}", errorMessage)
             throw OpenApiDataInvalidException(errorMessage)
         }
     }
