@@ -3,6 +3,7 @@ plugins {
     kotlin("jvm")
     `maven-publish`
     id("io.kotest") version "0.2.6"
+    id("com.gradle.plugin-publish") version "0.12.0"
 }
 
 configurations.all {
@@ -21,7 +22,12 @@ dependencies {
     testImplementation(group = "io.kotest", name = "kotest-assertions-core-jvm", version = "4.3.1")
     testImplementation(group = "io.kotest", name = "kotest-framework-engine-jvm", version = "4.3.1")
     testImplementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = "1.4.1")
-    //testRuntimeOnly(group = "org.slf4j", name = "slf4j-simple", version = "1.7.30")
+}
+
+pluginBundle {
+    website = "https://github.com/kpramesh2212/openapi-merger-plugin"
+    vcsUrl = "https://github.com/kpramesh2212/openapi-merger-plugin.git"
+    tags = listOf("openapi-3.0", "merger")
 }
 
 gradlePlugin {

@@ -17,23 +17,35 @@ allprojects {
 
     publishing {
         repositories {
-            if (project.hasProperty("publishToCentral")) {
-                val mavenCentralUsername: String by project.extra
-                val mavenCentralPassword: String by project.extra
-                val mavenCentralStagingUrl: String by project.extra
-                val mavenCentralSnapshotUrl: String by project.extra
-                maven {
-                    url = uri(if ("${project.version}".contains("SNAPSHOT")) mavenCentralSnapshotUrl else mavenCentralStagingUrl)
-                    credentials {
-                        username = mavenCentralUsername
-                        password = mavenCentralPassword
+            maven {
+                name = "central"
+                gradle.taskGraph.whenReady {
+                    url = uri (
+                            when {
+                                hasTask(":release") -> {
+                                    val mavenCentralStagingUrl: String by project.extra
+                                    mavenCentralStagingUrl
+                                }
+                                project.hasProperty("publishToCentral") && project.version.toString().contains("SNAPSHOT") -> {
+                                    val mavenCentralSnapshotUrl: String by project.extra
+                                    mavenCentralSnapshotUrl
+                                }
+                                else -> "$buildDir/localRepo"
+                            }
+                    )
+                    if (hasTask(":release") || project.hasProperty("publishToCentral")) {
+                        val mavenCentralUsername: String by project.extra
+                        val mavenCentralPassword: String by project.extra
+                        credentials {
+                            username = mavenCentralUsername
+                            password = mavenCentralPassword
+                        }
                     }
                 }
-            } else {
-                val localRepository: String by project.extra
-                maven {
-                    url = uri(localRepository)
-                }
+            }
+            maven {
+                name = "local"
+                url = uri(localRepository)
             }
         }
     }
@@ -55,4 +67,18 @@ val build by tasks.registering {
     dependsOn(publishMergerApp)
     dependsOn(publishGradlePlugin)
     dependsOn(publishMavenPlugin)
+}
+
+gradle.taskGraph.whenReady {
+    val publishGradlePluginToPortal = project(":openapi-merger-gradle-plugin").tasks.named("publishPlugins")
+    if (hasTask(":release")) {
+        val release by tasks.existing {
+            dependsOn(build)
+            dependsOn(publishGradlePluginToPortal)
+        }
+    }
+}
+
+val clean by tasks.registering(Delete::class) {
+    delete = setOf(buildDir)
 }

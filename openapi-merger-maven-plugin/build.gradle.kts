@@ -7,7 +7,6 @@ plugins {
 
 val localRepository: String by project.extra
 val localM2Repository = "$buildDir/m2Repo"
-val mavenCentralSnapshotUrl: String by project.extra
 
 val mavenCliRuntime: Configuration by configurations.creating {
     isVisible = false
@@ -65,8 +64,7 @@ val generatePluginDescriptor by tasks.registering(JavaExec::class) {
     main = "org.apache.maven.cli.MavenCli"
     systemProperties = mapOf(
         "maven.multiModuleProjectDirectory" to projectDir,
-        "localM2Repository" to localM2Repository,
-        "mavenCentralSnapshotUrl" to mavenCentralSnapshotUrl
+        "localM2Repository" to localM2Repository
     )
     args = listOf(
             "--errors",
@@ -85,18 +83,10 @@ val generatePluginDescriptor by tasks.registering(JavaExec::class) {
                     appendNode("outputDirectory", "${javaOutputDir.get()}")
                 }
                 asNode().appendNode("repositories").apply {
-                    if (project.hasProperty("publishToCentral")) {
-                        appendNode("repository").apply {
-                            appendNode("id", "maven-snapshot-repository")
-                            appendNode("name", "Maven Central Snapshot Repository")
-                            appendNode("url", mavenCentralSnapshotUrl)
-                        }
-                    } else {
-                        appendNode("repository").apply {
-                            appendNode("id", "local-repository")
-                            appendNode("name", "Local File Based Repository")
-                            appendNode("url", "file://$localRepository")
-                        }
+                    appendNode("repository").apply {
+                        appendNode("id", "local-repository")
+                        appendNode("name", "Local File Based Repository")
+                        appendNode("url", "file://$localRepository")
                     }
                 }
             }
