@@ -82,3 +82,9 @@ gradle.taskGraph.whenReady {
 val clean by tasks.registering(Delete::class) {
     delete = setOf(buildDir)
 }
+
+release {
+    (getProperty("git") as net.researchgate.release.GitAdapter.GitConfig).apply {
+        requireBranch = "main"
+    }
+}
