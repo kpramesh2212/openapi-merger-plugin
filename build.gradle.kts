@@ -22,7 +22,7 @@ allprojects {
                 gradle.taskGraph.whenReady {
                     url = uri (
                             when {
-                                hasTask(":release") -> {
+                                hasTask(":afterReleaseBuild") -> {
                                     val mavenCentralStagingUrl: String by project.extra
                                     mavenCentralStagingUrl
                                 }
@@ -30,10 +30,12 @@ allprojects {
                                     val mavenCentralSnapshotUrl: String by project.extra
                                     mavenCentralSnapshotUrl
                                 }
-                                else -> "$buildDir/localRepo"
+                                else -> {
+                                    "$buildDir/localRepo"
+                                }
                             }
                     )
-                    if (hasTask(":release") || project.hasProperty("publishToCentral")) {
+                    if (hasTask(":afterReleaseBuild") || project.hasProperty("publishToCentral")) {
                         val mavenCentralUsername: String by project.extra
                         val mavenCentralPassword: String by project.extra
                         credentials {
@@ -59,7 +61,6 @@ subprojects {
     }
 }
 
-
 val publishMergerApp = project(":openapi-merger-app").tasks.named("publish")
 val publishGradlePlugin = project(":openapi-merger-gradle-plugin").tasks.named("publish")
 val publishMavenPlugin = project(":openapi-merger-maven-plugin").tasks.named("publish")
@@ -69,14 +70,13 @@ val build by tasks.registering {
     dependsOn(publishMavenPlugin)
 }
 
-gradle.taskGraph.whenReady {
-    val publishGradlePluginToPortal = project(":openapi-merger-gradle-plugin").tasks.named("publishPlugins")
-    if (hasTask(":release")) {
-        val release by tasks.existing {
-            dependsOn(build)
-            dependsOn(publishGradlePluginToPortal)
-        }
-    }
+val afterReleaseBuild by tasks.existing {
+   dependsOn(build)
+}
+project(":openapi-merger-gradle-plugin").afterEvaluate {
+   afterReleaseBuild {
+       dependsOn(project(":openapi-merger-gradle-plugin").tasks.named("publishPlugins"))
+   }
 }
 
 val clean by tasks.registering(Delete::class) {
