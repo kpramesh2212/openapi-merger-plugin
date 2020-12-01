@@ -95,8 +95,8 @@ afterEvaluate {
 
 fun setPomDetails(mavenPublication: MavenPublication) {
      mavenPublication.pom {
-        name.set("Open API V3 Merger maven plugin")
-        description.set("A Maven plugin to merge open api v3 specification files")
+        name.set("Open API V3 Merger gradle plugin")
+        description.set("A gradle plugin to merge open api v3 specification files")
         url.set("https://github.com/kpramesh2212/openapi-merger-plugin")
 
         licenses {
