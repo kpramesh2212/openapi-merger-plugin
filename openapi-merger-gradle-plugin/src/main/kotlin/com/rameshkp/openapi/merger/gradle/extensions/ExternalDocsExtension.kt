@@ -4,6 +4,9 @@ import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import javax.inject.Inject
 
+/**
+ *  An extension class for External docs
+ */
 open class ExternalDocsExtension @Inject constructor(objectFactory: ObjectFactory) {
     val url: Property<String> = objectFactory.property(String::class.java)
     val description: Property<String> = objectFactory.property(String::class.java)

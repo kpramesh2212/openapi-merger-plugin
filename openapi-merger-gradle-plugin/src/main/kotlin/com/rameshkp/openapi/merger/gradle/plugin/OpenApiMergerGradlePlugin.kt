@@ -7,6 +7,11 @@ import com.rameshkp.openapi.merger.gradle.utils.OPENAPI_TASK_NAME
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
+/**
+ *  The main plugin
+ *
+ *  Creates an extension and a task
+ */
 class OpenApiMergerGradlePlugin: Plugin<Project> {
 
     override fun apply(project: Project) {

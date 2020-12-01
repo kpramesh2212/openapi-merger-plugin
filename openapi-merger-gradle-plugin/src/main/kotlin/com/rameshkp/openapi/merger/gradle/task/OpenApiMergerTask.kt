@@ -19,6 +19,9 @@ import org.gradle.api.tasks.SkipWhenEmpty
 import org.gradle.api.tasks.TaskAction
 import kotlin.math.log
 
+/**
+ * Open Api Merger task to merge open api files
+ */
 open class OpenApiMergerTask : DefaultTask() {
     @get:SkipWhenEmpty
     @get:InputDirectory

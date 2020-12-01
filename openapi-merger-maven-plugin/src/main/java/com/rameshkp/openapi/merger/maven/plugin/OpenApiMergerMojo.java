@@ -12,6 +12,9 @@ import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.File;
 
+/**
+ *  The plugin mojo class
+ */
 @Mojo(name = "merge")
 public class OpenApiMergerMojo extends AbstractMojo {
     /**
