@@ -2,7 +2,8 @@ plugins {
     kotlin("jvm")
     `maven-publish`
     signing
-    id("io.kotest") version "0.2.6"
+    id("io.kotest")
+    id("org.jetbrains.dokka")
 }
 
 java {
@@ -74,4 +75,10 @@ tasks {
 
 signing {
     sign(publishing.publications["openApiMergerApp"])
+}
+
+val dokkaJavadoc by tasks.existing
+val javadocJar by tasks.existing(Jar::class) {
+    dependsOn(dokkaJavadoc)
+    from("$buildDir/dokka/javadoc")
 }

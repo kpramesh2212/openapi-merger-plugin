@@ -14,6 +14,11 @@ val mavenCliRuntime: Configuration by configurations.creating {
     isCanBeResolved = true
 }
 
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
 repositories {
     mavenCentral()
 }
