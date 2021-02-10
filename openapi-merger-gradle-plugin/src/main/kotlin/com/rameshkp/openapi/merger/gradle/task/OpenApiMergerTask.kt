@@ -43,6 +43,7 @@ open class OpenApiMergerTask : DefaultTask() {
             getByName(OPENAPI_EXTENSION_NAME) as OpenApiMergerExtension
         }
         inputDirectory.set(openApiMergerExtension.inputDirectory)
+        validateAndSetValues()
     }
 
     private fun validateAndSetValues() {
@@ -62,7 +63,6 @@ open class OpenApiMergerTask : DefaultTask() {
 
     @TaskAction
     fun execute() {
-        validateAndSetValues()
 
         val outputFile = outputFileProperty.asFile.get()
         outputFile.parentFile.mkdirs()
