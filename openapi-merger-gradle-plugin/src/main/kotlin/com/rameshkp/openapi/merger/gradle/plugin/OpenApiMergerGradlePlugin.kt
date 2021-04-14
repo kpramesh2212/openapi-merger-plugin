@@ -15,7 +15,7 @@ import org.gradle.api.Project
 class OpenApiMergerGradlePlugin: Plugin<Project> {
 
     override fun apply(project: Project) {
-        project.extensions.create(OPENAPI_EXTENSION_NAME, OpenApiMergerExtension::class.java, project.objects)
+        project.extensions.create(OPENAPI_EXTENSION_NAME, OpenApiMergerExtension::class.java, project)
         project.tasks.register(OPENAPI_TASK_NAME, OpenApiMergerTask::class.java)
     }
 }

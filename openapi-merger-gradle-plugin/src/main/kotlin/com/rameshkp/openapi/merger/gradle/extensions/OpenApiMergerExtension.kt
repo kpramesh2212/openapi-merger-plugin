@@ -1,17 +1,17 @@
 package com.rameshkp.openapi.merger.gradle.extensions
 
 import org.gradle.api.Action
+import org.gradle.api.Project
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.model.ObjectFactory
 import javax.inject.Inject
 
 /**
  *  An extension for open api merger object
  */
-open class OpenApiMergerExtension @Inject constructor(objectFactory: ObjectFactory) {
-    val inputDirectory: DirectoryProperty = objectFactory.directoryProperty()
-    internal val openApi: OpenApiExtension = objectFactory.newInstance(OpenApiExtension::class.java, objectFactory)
-    internal val output: OutputExtension = objectFactory.newInstance(OutputExtension::class.java, objectFactory)
+open class OpenApiMergerExtension @Inject constructor(project: Project) {
+    val inputDirectory: DirectoryProperty = project.objects.directoryProperty()
+    internal val openApi: OpenApiExtension = project.objects.newInstance(OpenApiExtension::class.java, project)
+    internal val output: OutputExtension = project.objects.newInstance(OutputExtension::class.java, project.objects)
 
     /**
      *  Invoke the openApi extension action

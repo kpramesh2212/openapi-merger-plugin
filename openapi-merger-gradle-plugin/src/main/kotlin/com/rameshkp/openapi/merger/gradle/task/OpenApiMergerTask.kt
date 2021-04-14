@@ -17,7 +17,6 @@ import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.SkipWhenEmpty
 import org.gradle.api.tasks.TaskAction
-import kotlin.math.log
 
 /**
  * Open Api Merger task to merge open api files
@@ -113,6 +112,13 @@ open class OpenApiMergerTask : DefaultTask() {
                     eDocs
                 }
             }
+
+            val servers = ArrayList<Server>()
+            openApiExtension.servers.all {
+                servers.add(Server(it.url.orNull, it.description.orNull))
+            }
+
+            this.servers = servers
 
             this
         }

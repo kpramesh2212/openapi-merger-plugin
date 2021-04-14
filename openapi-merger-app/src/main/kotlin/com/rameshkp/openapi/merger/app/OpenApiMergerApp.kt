@@ -9,6 +9,7 @@ import io.swagger.v3.oas.models.ExternalDocumentation
 import io.swagger.v3.oas.models.info.Contact
 import io.swagger.v3.oas.models.info.Info
 import io.swagger.v3.oas.models.info.License
+import io.swagger.v3.oas.models.servers.Server
 import io.swagger.v3.parser.OpenAPIV3Parser
 import io.swagger.v3.parser.core.models.ParseOptions
 import org.slf4j.LoggerFactory
@@ -27,18 +28,30 @@ class OpenApiMergerApp {
 
     fun merge(inputDir: File, outputFile: File, openApi: OpenApi?) {
         validate(openApi)
-        inputDir.walk().filter { 
+
+        // Walk the input directory and merge all files into one
+        inputDir.walk().filter {
             validFileExtension.contains(it.extension)
         }.forEach {
             log.debug("Parsing OpenAPI file {}", it.absolutePath)
             val openAPI = OpenAPIV3Parser().read(it.absolutePath, null, parseOptions)
             openApiMerger.merge(openAPI)
         }
+
+        // Convert the server object to open api server objects
+        val servers  = openApi!!.servers.map {
+            val s = Server()
+            s.url = it.url
+            s.description = it.description
+            s
+        }
+
+        // Set the relevant data for merged files
         val merged = openApiMerger.get()
         merged?.run {
             log.debug("Constructing the OpenApi model")
             // Set the openapi model object values to merged file
-            openApi?.let { openApiModel ->
+            openApi.let { openApiModel ->
                 openapi = openApiModel.version
                 // Set the info object
                 info = openApiModel.info?.let { infoModelObj ->
@@ -71,6 +84,10 @@ class OpenApiMergerApp {
                     externalDocs.url = externalDocsModelObj.url
                     externalDocs.description = externalDocsModelObj.description
                     externalDocs
+                }
+
+                if (servers.isNotEmpty()) {
+                    this.servers = servers
                 }
             }
 

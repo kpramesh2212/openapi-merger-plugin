@@ -1,17 +1,21 @@
 package com.rameshkp.openapi.merger.gradle.extensions
 
 import org.gradle.api.Action
-import org.gradle.api.model.ObjectFactory
+import org.gradle.api.NamedDomainObjectContainer
+import org.gradle.api.Project
 import org.gradle.api.provider.Property
 import javax.inject.Inject
 
 /**
  *  An extension for open api object
  */
-open class OpenApiExtension @Inject constructor(objectFactory: ObjectFactory) {
-    val openApiVersion: Property<String> = objectFactory.property(String::class.java)
-    val info: InfoExtension = objectFactory.newInstance(InfoExtension::class.java)
-    internal val externalDocs: ExternalDocsExtension = objectFactory.newInstance(ExternalDocsExtension::class.java, objectFactory)
+open class OpenApiExtension @Inject constructor(project: Project) {
+    val openApiVersion: Property<String> = project.objects.property(String::class.java)
+    val info: InfoExtension = project.objects.newInstance(InfoExtension::class.java)
+    internal val externalDocs: ExternalDocsExtension = project.objects.newInstance(ExternalDocsExtension::class.java)
+    val servers: NamedDomainObjectContainer<ServerExtension> = project.container(ServerExtension::class.java) {
+        ServerExtension(it, project.objects)
+    }
 
     /**
      *  Invoke the info extension

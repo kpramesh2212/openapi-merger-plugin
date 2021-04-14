@@ -91,6 +91,16 @@ openApiMerger {
             description.set("External docs description")
             url.set("http://external-docs.com/uri")
         }
+        servers {
+            register("production") {
+                url.set("https://prod.com:9090")
+                description.set("production environment")
+            }
+            register("testing") {
+                url.set("https://localhost:8080")
+                description.set("test environment")
+            }
+        }
     }
 }
 ```
@@ -143,6 +153,16 @@ Parameter | Description | Required | Default
 --------- | ----------- | -------- | -------
 `description` | A short description of the target documentation. | No | null
 `url` | The URL for the target documentation. MUST be in the format of a URL. | Yes | N/A
+
+
+#### servers block
+A list of server blocks
+
+#### server block
+Parameter | Description | Required | Default
+--------- | ----------- | -------- | -------
+`description` | A short description of the server. | No | null
+`url` | The URL for the server. MUST be in the format of a URL. | Yes | N/A
 
 
 # Building the plugin
