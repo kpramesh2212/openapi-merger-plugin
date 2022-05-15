@@ -32,6 +32,8 @@ class OpenApiMergerApp {
         // Walk the input directory and merge all files into one
         inputDir.walk().filter {
             validFileExtension.contains(it.extension)
+        }.sortedBy {
+            it 
         }.forEach {
             log.debug("Parsing OpenAPI file {}", it.absolutePath)
             val openAPI = OpenAPIV3Parser().read(it.absolutePath, null, parseOptions)
