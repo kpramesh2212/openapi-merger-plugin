@@ -13,22 +13,6 @@ java {
     withSourcesJar()
 }
 
-configurations.all {
-    resolutionStrategy.eachDependency {
-        if (name.contains("dokka")) {
-            if (requested.group == "org.jetbrains.kotlin" && requested.version != "1.4.10") {
-                useVersion("1.4.10")
-                because("Dokka plugin requires kotlin version 1.4.10")
-            }
-        } else {
-            if (requested.group == "org.jetbrains.kotlin" && requested.version != "1.3.72") {
-                useVersion("1.3.72")
-                because("Gradle 6.7 uses version 1.3.72")
-            }
-        }
-    }
-}
-
 dependencies {
     implementation(kotlin(module = "stdlib"))
     implementation(project(":openapi-merger-app"))
