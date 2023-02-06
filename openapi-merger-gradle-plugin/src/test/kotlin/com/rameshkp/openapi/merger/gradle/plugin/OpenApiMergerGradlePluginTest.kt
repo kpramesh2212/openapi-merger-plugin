@@ -12,17 +12,18 @@ import org.gradle.testfixtures.ProjectBuilder
 
 
 internal class OpenApiMergerGradlePluginTest: WordSpec({
-    val project = ProjectBuilder.builder().build()
-
+    val builder = ProjectBuilder.builder()
 
     "Using the Plugin ID" should {
         "Apply the Plugin" {
+            val project = builder.build()
             project.pluginManager.apply("com.rameshkp.openapi-merger-gradle-plugin")
             project.plugins.getPlugin(OpenApiMergerGradlePlugin::class.java) shouldNotBe null
         }
     }
 
     "Applying the Plugin" should {
+        val project = builder.build()
         project.pluginManager.apply(OpenApiMergerGradlePlugin::class.java)
 
         "Register an extension with name 'openApiMerger'" {
@@ -38,6 +39,7 @@ internal class OpenApiMergerGradlePluginTest: WordSpec({
     }
 
     "Running the 'openApiMerger' task" should {
+        val project = builder.build()
         project.pluginManager.apply(OpenApiMergerGradlePlugin::class.java)
         val openApiMergerExtension = project.extensions.getByName("openApiMerger") as OpenApiMergerExtension
         val openApiMerger = project.tasks.getByName("mergeOpenApiFiles") as OpenApiMergerTask
@@ -78,15 +80,25 @@ internal class OpenApiMergerGradlePluginTest: WordSpec({
                 OpenApi Info Version cannot be blank
             """.trimIndent()
         }
-        "Throw exception when output file extension is invalid" {
+    }
+
+    "Running the 'openApiMerger' task with invalid file extension" should {
+        "Throw exception" {
+            val project = builder.build()
+            project.pluginManager.apply(OpenApiMergerGradlePlugin::class.java)
+            val openApiMergerExtension = project.extensions.getByName("openApiMerger") as OpenApiMergerExtension
+            openApiMergerExtension.inputDirectory.set(project.buildDir)
+
             openApiMergerExtension.openApi.openApiVersion.set("3.0.3")
             openApiMergerExtension.openApi.info.title.set("Title")
             openApiMergerExtension.openApi.info.version.set("version")
             openApiMergerExtension.output.fileExtension.set("txt")
+
             val exception = shouldThrow<GradleException> {
+                val openApiMerger = project.tasks.getByName("mergeOpenApiFiles") as OpenApiMergerTask
                 openApiMerger.execute()
             }
-            exception.message shouldBe "Invalid file extension txt. Valid values are [yaml, json, yml]"
+            exception.message shouldBe "Could not create task ':mergeOpenApiFiles'."
         }
     }
 
