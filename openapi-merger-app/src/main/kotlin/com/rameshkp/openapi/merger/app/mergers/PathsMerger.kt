@@ -1,28 +1,17 @@
 package com.rameshkp.openapi.merger.app.mergers
 
+import io.swagger.v3.oas.models.PathItem
 import io.swagger.v3.oas.models.Paths
-import org.slf4j.LoggerFactory
 
-/**
- *  A class to merge path objects in open api
- */
-class PathsMerger: Mergeable<Paths> {
-    private val log = LoggerFactory.getLogger(javaClass)
-    private val paths = Paths()
-
-    override fun merge(from: Paths?) {
-        from?.run {
-            forEach { entry ->
-                if (paths.containsKey(entry.key)) {
-                    log.warn("Path entry for {} already exists. Hence skipping", entry.key)
-                } else {
-                    paths[entry.key] = entry.value
-                }
-            }
-        }
+class PathsMerger: MapMerger<PathItem>() {
+    override fun whenKeyExists(key: String, value: PathItem) {
+        val existingPathItem = map.getValue(key)
+        PathItemMerger(key, existingPathItem).merge(value)
     }
 
-    override fun get(): Paths? {
-        return if (paths.size > 0) paths else null
+    override fun get(): Paths {
+        val path = Paths()
+        map.forEach { (key, value) ->  path.addPathItem(key, value)}
+        return path
     }
 }

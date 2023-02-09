@@ -25,6 +25,7 @@ dependencies {
     testImplementation(group = "io.kotest", name = "kotest-assertions-core-jvm", version = "4.3.1")
     testImplementation(group = "io.kotest", name = "kotest-framework-engine-jvm", version = "4.3.1")
     testImplementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = "1.4.1")
+    testImplementation(group = "io.mockk", name = "mockk", version = "1.12.2")
 
 }
 

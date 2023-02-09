@@ -6,20 +6,24 @@ import java.util.*
 /**
  *  A class to merge a Map with string keys and value T
  */
-class MapMerger<T>: Mergeable<Map<String, T>> {
+open class MapMerger<T>: Mergeable<Map<String, T>> {
     private val log = LoggerFactory.getLogger(javaClass)
-    private val map = TreeMap<String, T>()
+    protected val map = TreeMap<String, T>()
 
     override fun merge(from: Map<String, T>?) {
         from?.run {
             forEach { entry ->
                 if (map.containsKey(entry.key)) {
-                    log.warn("{} already exist in the map. Hence skipping", entry.key)
+                    whenKeyExists(entry.key, entry.value)
                 } else {
                     map[entry.key] = entry.value
                 }
             }
         }
+    }
+
+    open fun whenKeyExists(key: String, value: T) {
+        log.warn("{} already exist in the map. Hence skipping", key)
     }
 
     override fun get(): Map<String, T>? {
