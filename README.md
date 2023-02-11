@@ -1,5 +1,5 @@
 # openapi-merger-plugin
-A plugin to merge OpenAPI-3 specification files into a single file
+A plugin to merge OpenAPI-3 specification files into a single file <<name>>
 
 what does the plugin do
 ------------------
@@ -174,23 +174,23 @@ OpenAPI objects
 
 The plugin will merge the following Root OpenAPI objects and all its sub object from the input files
 
-|S.NO|Field Name| 
-|-----|---------|
-|1|servers|
-|2|paths|
-|3|components|
-|4|security|
-|5|tags|
+| S.NO | Field Name | 
+|------|------------|
+| 1    | servers    |
+| 2    | paths      |
+| 3    | components |
+| 4    | security   |
+| 5    | tags       |
 
 The plugin will **ignore** following Root OpenAPI objects and all its sub object from the input files.
 
-|S.NO|Field Name| 
-|-----|---------|
-|1|openapi|
-|2|info|
-|3|externalDocs|
+| S.NO | Field Name   | 
+|------|--------------|
+| 1    | openapi      |
+| 2    | info         |
+| 3    | externalDocs |
 
-However the plugin allows the user to configure the above object as input properties that will be placed in the merged file.
+However, the plugin allows the user to configure the above object as input properties that will be placed in the merged file.
 
 Supported File formats
 -------------------

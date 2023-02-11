@@ -7,7 +7,7 @@ This Gradle plugin provides the capability to merge multiple open api v3 specifi
 Compatibility Notes
 -------------------
 
-The plugin is build on gradle version 6.7
+The plugin is build on gradle version 6.9.3
 
 The Java version used to compile the plugin 1.8 
 
@@ -18,14 +18,14 @@ Gradle Groovy DSL
 
 ```groovy
 plugins {
-      id "com.rameshkp.openapi-merger-gradle-plugin" version "1.0.0"
+      id "com.rameshkp.openapi-merger-gradle-plugin" version "1.0.5"
 }
 ```
 
 Gradle Kotlin DSL
 ```kotlin
 plugins {
-    id("com.rameshkp.openapi-merger-gradle-plugin") version "1.0.0"
+    id("com.rameshkp.openapi-merger-gradle-plugin") version "1.0.5"
 }
 ```
 
@@ -76,20 +76,20 @@ openApiMerger {
             title.set("Open API Merger")
             description.set("All files merged by open api merger")
             version.set("1.0.0-SNAPSHOT")
-            termsOfService.set("http://openapimerger.com/terms-of-service")
+            termsOfService.set("https://openapimerger.com/terms-of-service")
             contact {
                 name.set("OpenApiMerger Team")
                 email.set("openapi@sample.com")
-                url.set("http://openapimerger.com")
+                url.set("https://openapimerger.com")
             }
             license {
                 name.set("Apache License v2.0")
-                url.set("http://apache.org/v2")
+                url.set("https://apache.org/v2")
             }
         }
         externalDocs {
             description.set("External docs description")
-            url.set("http://external-docs.com/uri")
+            url.set("https://external-docs.com/uri")
         }
         servers {
             register("production") {
@@ -105,65 +105,63 @@ openApiMerger {
 }
 ```
 #### openApiMerger block
-Parameter | Description | Required | Default
---------- | ----------- | -------- | -------
-`inputDirectory` |  The input directory containing the openapi v3 specification files. The input directory can contain files in both yaml and json format. | Yes | N/A
-`output(Block)` | The output block is used to customize the output of the open api merger plugin | No | Check output block
-`openApi(Block)` | The openApi block is used to customize the common openApi object for the merged file. | Yes | N/A
+| Parameter        | Description                                                                                                                            | Required | Default            |
+|------------------|----------------------------------------------------------------------------------------------------------------------------------------|----------|--------------------|
+ | `inputDirectory` | The input directory containing the openapi v3 specification files. The input directory can contain files in both yaml and json format. | Yes      | N/A                |
+ | `output(Block)`  | The output block is used to customize the output of the open api merger plugin                                                         | No       | Check output block |
+ | `openApi(Block)` | The openApi block is used to customize the common openApi object for the merged file.                                                  | Yes      | N/A                |
 
 #### output block
-Parameter | Description | Required | Default
---------- | ----------- | -------- | -------
-`directory` |  The output directory to place the merged open api v3 specification file. | No | build/open-api/
-`fileName` | Name of the merged output openapi v3 specification file | No | openapi
-`fileExtension` | The format of the output. Can either be one of yaml or json | No | yaml
+| Parameter       | Description                                                              | Required | Default         |
+|-----------------|--------------------------------------------------------------------------|----------|-----------------|
+| `directory`     | The output directory to place the merged open api v3 specification file. | No       | build/open-api/ |
+| `fileName`      | Name of the merged output openapi v3 specification file                  | No       | openapi         |
+| `fileExtension` | The format of the output. Can either be one of yaml or json              | No       | yaml            |
 
 #### openApi block
-Parameter | Description | Required | Default
---------- | ----------- | -------- | -------
-`openApiVersion` |  The version of open api. | Yes | N/A
-`info(block)` | [See Info object in open api v3 specification for explanation](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#info-object) | Yes | N/A
-`externalDocs(block)` | [See External Documentation object in open api v3 specification for explanation](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#external-documentation-object) | No | null
+| Parameter             | Description                                                                                                                                                                                | Required | Default |
+|-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|---------|
+| `openApiVersion`      | The version of open api.                                                                                                                                                                   | Yes      | N/A     |
+| `info(block)`         | [See Info object in open api v3 specification for explanation](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#info-object)                                     | Yes      | N/A     |
+| `externalDocs(block)` | [See External Documentation object in open api v3 specification for explanation](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#external-documentation-object) | No       | null    |
 
 #### info block
-Parameter | Description | Required | Default
---------- | ----------- | -------- | -------
-`title` |   The title of the API. | Yes | N/A
-`description` | A short description of the API | No | null
-`termsOfService` |  URL to the Terms of Service for the API | No | null
-`version` | The version of the OpenAPI document | Yes | N/A
-`contact(block)` | [See Contact object in open api v3 specification for explanation](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#contact-object) | No | null
-`license(block)` | [See License object in open api v3 specification for explanation](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#licenseObject) | No | null
+| Parameter        | Description                                                                                                                                                  | Required | Default |
+|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|---------|
+| `title`          | The title of the API.                                                                                                                                        | Yes      | N/A     |
+| `description`    | A short description of the API                                                                                                                               | No       | null    |
+| `termsOfService` | URL to the Terms of Service for the API                                                                                                                      | No       | null    |
+| `version`        | The version of the OpenAPI document                                                                                                                          | Yes      | N/A     |
+| `contact(block)` | [See Contact object in open api v3 specification for explanation](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#contact-object) | No       | null    |
+| `license(block)` | [See License object in open api v3 specification for explanation](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#licenseObject)  | No       | null    |
 
 #### contact block
-Parameter | Description | Required | Default
---------- | ----------- | -------- | -------
-`name` |  The identifying name of the contact person/organization. | No | null
-`url` | The URL pointing to the contact information. MUST be in the format of a URL. | No | null
-`email` | The email address of the contact person/organization. MUST be in the format of an email address. | No | null
+| Parameter | Description                                                                                      | Required | Default |
+|-----------|--------------------------------------------------------------------------------------------------|----------|---------|
+| `name`    | The identifying name of the contact person/organization.                                         | No       | null    |
+| `url`     | The URL pointing to the contact information. MUST be in the format of a URL.                     | No       | null    |
+| `email`   | The email address of the contact person/organization. MUST be in the format of an email address. | No       | null    |
 
 #### license block
-Parameter | Description | Required | Default
---------- | ----------- | -------- | -------
-`name` | The license name used for the API. | Yes | N/A
-`url` | A URL to the license used for the API. MUST be in the format of a URL. | No | null
+| Parameter | Description                                                            | Required | Default |
+|-----------|------------------------------------------------------------------------|----------|---------|
+| `name`    | The license name used for the API.                                     | Yes      | N/A     |
+| `url`     | A URL to the license used for the API. MUST be in the format of a URL. | No       | null    |
 
 #### externalDocs block
-Parameter | Description | Required | Default
---------- | ----------- | -------- | -------
-`description` | A short description of the target documentation. | No | null
-`url` | The URL for the target documentation. MUST be in the format of a URL. | Yes | N/A
-
+| Parameter     | Description                                                           | Required | Default |
+|---------------|-----------------------------------------------------------------------|----------|---------|
+| `description` | A short description of the target documentation.                      | No       | null    |
+| `url`         | The URL for the target documentation. MUST be in the format of a URL. | Yes      | N/A     |
 
 #### servers block
 A list of server blocks
 
 #### server block
-Parameter | Description | Required | Default
---------- | ----------- | -------- | -------
-`description` | A short description of the server. | No | null
-`url` | The URL for the server. MUST be in the format of a URL. | Yes | N/A
-
+| Parameter     | Description                                             | Required | Default |
+|---------------|---------------------------------------------------------|----------|---------|
+| `description` | A short description of the server.                      | No       | null    |
+| `url`         | The URL for the server. MUST be in the format of a URL. | Yes      | N/A     |
 
 # Building the plugin
 
