@@ -36,7 +36,7 @@ class OpenApiMergerApp {
             it 
         }.forEach {
             log.debug("Parsing OpenAPI file {}", it.absolutePath)
-            parseOptions.isResolve = true
+            parseOptions.isResolve = false
             val openAPI = OpenAPIV3Parser().read(it.absolutePath, null, parseOptions)
             openApiMerger.merge(openAPI)
         }
