@@ -13,7 +13,7 @@ java {
 
 dependencies {
     implementation(kotlin(module = "stdlib"))
-    implementation(group = "io.swagger.parser.v3", name = "swagger-parser", version = "2.0.23")
+    implementation(group = "io.swagger.parser.v3", name = "swagger-parser", version = "2.1.16")
     implementation(group = "org.slf4j", name = "slf4j-api", version = "1.7.30")
 
     implementation(group = "javax.validation", name = "validation-api", version = "2.0.0.Final")
